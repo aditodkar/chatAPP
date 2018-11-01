@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './chat.css'
 import io from "socket.io-client";
+import UserList from './userlist';
 
 export default class Chat extends Component {
 
@@ -10,6 +11,7 @@ export default class Chat extends Component {
         this.state = {
             message: '',
             date: '',
+            author: '',
             messages: []
         };
         this.sendMessage = this.sendMessage.bind(this);
@@ -33,13 +35,14 @@ export default class Chat extends Component {
 
       if(this.state.message !== ''){
         this.socket.emit('SEND_MESSAGE', {
-            message: this.props.match.params.user + '#' + this.state.message,
+            author: this.props.match.params.user,
+            message: this.state.message,
             date: Date.now()
         });
 
-        this.socket.emit('TYPING', {
-            typing: this.props.match.params.user
-        })
+        // this.socket.emit('TYPING', {
+        //     typing: this.props.match.params.user
+        // })
         
       }
     };
@@ -52,7 +55,7 @@ export default class Chat extends Component {
         date: ''
       });
       //console.log(this.state.message);
-    //   console.log(this.state.messages);
+      console.log(this.state.messages);
     };
 
     render() {
@@ -64,15 +67,13 @@ export default class Chat extends Component {
                         <div id="messages" className="card-block">
                             {this.state.messages.map((message, index) => {
 
-                                let word = message.message.split('#')
-
-                                if(word[0] === this.props.match.params.user){
+                                if(message.author === this.props.match.params.user){
                                     return (
-                                        <div key={index} className="msgBoxRight"><p className="msgTextRight">{word[1]}</p></div>
+                                        <div key={index} className="msgBoxRight"><p className="msgTextRight">{message.message}</p></div>
                                     )
                                 }else{
                                     return (
-                                        <div key={index} className="msgBoxLeft"><p className="msgTextLeft">{word[1]}</p></div>
+                                        <div key={index} className="msgBoxLeft"><p className="msgTextLeft">{message.message}</p></div>
                                     ) 
                                 }  
                             })}
@@ -88,13 +89,11 @@ export default class Chat extends Component {
                             <button id="send" className="button" onClick={this.sendMessage}>Send</button>
                         </div>
                         <div className="upload">
-                            <form action="/action_page.php">
-                                <input type="file" name="pic" accept="image/*"/>
-                                <input type="submit"/>
-                            </form>
+                            
                         </div>
                     </div>
                 </div>
+                <UserList/>
         </div>
         )
     }

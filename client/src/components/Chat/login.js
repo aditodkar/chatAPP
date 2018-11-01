@@ -1,44 +1,59 @@
 import React, { Component } from 'react'
 import './login.css'
+import { connect } from 'react-redux';
+import { createUser } from '../../store/actions/loginAction';
 
-export default class Login extends Component {
+class Login extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      firstName:'',
+      lastName:'',
+      email:''
+    }
+
+    this.onChangeHandler = this.onChangeHandler.bind(this)
+    this.onSubmitHandler = this.onSubmitHandler.bind(this)
+  }
+
+  onChangeHandler(e){
+    this.setState({ [e.target.name]: e.target.value })
+  }
+
+  onSubmitHandler(e){
+    e.preventDefault();
+    this.props.createUser(this.state)
+    console.log(this.state)
+  }
+
   render() {
     return (
       <div>
-          {/* <form>
-            <div id="fname">
-              <label for="fname">First Name</label>
-              <input type="text" name="firstname" placeholder="Your name.."/>
-            </div>
+        <form onSubmit={this.onSubmitHandler}>
+          <label>
+            FirstName:
+            <input type="text" name="firstName" value={this.state.firstName} onChange={this.onChangeHandler} />
+          </label>
 
-            <div id="lname">
-              <label for="lname">Last Name</label>
-              <input type="text" name="lastname" placeholder="Your last name.."/>
-            </div>
-            
-            <div id="email">
-              <label for="email">Email ID</label>
-              <input type="text" name="email" placeholder="Your email id ..."/>
-            </div>
-          
-            <input id="submit" type="submit" value="Submit"/>
-          </form> */}
-          
-          <form>
-              <label for="fname">First Name</label>
-              <input id="fname" type="text" name="firstname" placeholder="Your name.."/>
+          <label>
+            LastName:
+            <input type="text" name="lastName" value={this.state.lastName} onChange={this.onChangeHandler} />
+          </label>
 
-              <label for="lname">Last Name</label>
-              <input id="lname" type="text" name="lastname" placeholder="Your last name.."/>
-            
-              <label for="email">Email ID</label>
-              <input id="email" type="text" name="email" placeholder="Your email id ..."/>
-          
-              <input id="submit" type="submit" value="Submit"/>
-          </form> 
-
-
+          <label>
+            Email:
+            <input type="text" name="email" value={this.state.email} onChange={this.onChangeHandler} />
+          </label>
+          <button type="submit" className="btn btn-default">Submit</button>
+        </form>
       </div>
     )
   }
 }
+
+const mapStateToProps = state => ({
+  users: state.users
+})
+
+export default connect (mapStateToProps, { createUser })(Login);

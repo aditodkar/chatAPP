@@ -1,16 +1,15 @@
-
-#messages{
-    height:300px;
-    overflow: scroll;
-    width: 100%;
-}
-
 #chat{
     width: 700px;
     height: 420px;
     margin-left: 50px;
     margin-top: 60px;
     box-shadow: 0 0 2px 0; 
+}
+
+#messages{
+    height:300px;
+    overflow: scroll;
+    width: 100%;
 }
 
 #textarea {
@@ -40,6 +39,7 @@
     margin-top: 10px;
     float: right;
     clear: both;
+    padding: 5px;
 }
 
 .msgTextRight {
@@ -53,6 +53,7 @@
     margin-top: 10px;
     float: left;
     clear: both;
+    padding: 5px;
 }
 
 .msgTextLeft {

@@ -3,6 +3,10 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const MessageSchema = new Schema({
+  author: {
+    type: String,
+    required: true,
+  },
   message: {
     type: String,
     required: true
