@@ -1,0 +1,66 @@
+
+#messages{
+    height:300px;
+    overflow: scroll;
+    width: 100%;
+}
+
+#chat{
+    width: 700px;
+    height: 420px;
+    margin-left: 50px;
+    margin-top: 60px;
+    box-shadow: 0 0 2px 0; 
+}
+
+#textarea {
+    width: 600px;
+}
+
+.row{
+    margin-left: 10px;
+}
+
+.column2 {
+    padding-left: 20px;
+}
+
+#inputmsg {
+    width: 600px;
+    height: 50px;
+    margin-top: 10px;
+}
+
+#send{
+    margin-top: 10px;
+}
+
+.msgBoxRight {
+    max-width: 350px;
+    margin-top: 10px;
+    float: right;
+    clear: both;
+}
+
+.msgTextRight {
+    padding: 10px;
+    background-color: #EBEEFD;
+    border-radius: 25px;
+}
+
+.msgBoxLeft {
+    max-width: 350px;
+    margin-top: 10px;
+    float: left;
+    clear: both;
+}
+
+.msgTextLeft {
+    padding: 10px;
+    background-color: #EBEEFD;
+    border-radius: 25px;
+}
+
+.upload{
+    margin-top: 20px;
+}
