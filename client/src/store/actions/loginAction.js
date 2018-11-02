@@ -3,9 +3,9 @@ import axios from '../../axiosInstance'
 
 const apiUrl = 'http://localhost:5000/api/users';
 
-export const createUser = ({ firstName, lastName, email }) => {
+export const createUser = ({ firstName, username, email }) => {
     return (dispatch) => {
-      return axios.post(`${apiUrl}`, {firstName, lastName, email})
+      return axios.post(`${apiUrl}`, {firstName, username, email})
         .then(response => {
           dispatch(createUserSuccess(response.data))
         })
@@ -20,7 +20,7 @@ export const createUserSuccess =  (data) => {
       type: ADD_USER,
       payload: {
         firstName: data.firstName,
-        lastName: data.lastName,
+        username: data.username,
         email: data.email
       }
     }

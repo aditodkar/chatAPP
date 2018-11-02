@@ -9,7 +9,7 @@ class Login extends Component {
     super(props)
     this.state = {
       firstName:'',
-      lastName:'',
+      username:'',
       email:''
     }
 
@@ -24,7 +24,8 @@ class Login extends Component {
   onSubmitHandler(e){
     e.preventDefault();
     this.props.createUser(this.state)
-    console.log(this.state)
+    this.props.history.push('/'+this.state.username)
+    // console.log(this.state)
   }
 
   render() {
@@ -37,8 +38,8 @@ class Login extends Component {
           </label>
 
           <label>
-            LastName:
-            <input type="text" name="lastName" value={this.state.lastName} onChange={this.onChangeHandler} />
+            Username:
+            <input type="text" name="username" value={this.state.username} onChange={this.onChangeHandler} />
           </label>
 
           <label>

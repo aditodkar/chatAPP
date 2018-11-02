@@ -95,7 +95,7 @@ export default class Chat extends Component {
                     </div>
                 </div>
                 <div className="userlist">
-                    <UserList/>
+                    <UserList currentUser={this.props.match.params.user}/>
                 </div>
             </div>
         </div>
