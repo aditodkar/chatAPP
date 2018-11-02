@@ -62,6 +62,7 @@ export default class Chat extends Component {
         return (
         <div>
             <h2>Hello {this.props.match.params.user}</h2>
+            <div className="container">
                 <div id="chat">
                     <div className="card">
                         <div id="messages" className="card-block">
@@ -79,21 +80,24 @@ export default class Chat extends Component {
                             })}
                         </div>
                         <div id="feedback"></div>
-                    </div>
-                    <div className="row">
-                        <div className="column">
-                            <input id="inputmsg" type="text" placeholder="Enter Message...."
-                            value={this.state.message} onChange={ev => this.setState({message: ev.target.value})}/>
-                        </div>
-                        <div className="column2">
-                            <button id="send" className="button" onClick={this.sendMessage}>Send</button>
-                        </div>
-                        <div className="upload">
-                            
+                            <div className="row">
+                            <div className="column">
+                                <input id="inputmsg" type="text" placeholder="Enter Message...."
+                                value={this.state.message} onChange={ev => this.setState({message: ev.target.value})}/>
+                            </div>
+                            <div className="column2">
+                                <button id="send" className="button" onClick={this.sendMessage}>Send</button>
+                            </div>
+                            <div className="upload">
+                                
+                            </div>
                         </div>
                     </div>
                 </div>
-                <UserList/>
+                <div className="userlist">
+                    <UserList/>
+                </div>
+            </div>
         </div>
         )
     }

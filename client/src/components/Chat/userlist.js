@@ -1,13 +1,28 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { fetchUsers } from '../../store/actions/userAction'
 
-export default class UserList extends Component {
+class UserList extends Component {
+
+  componentDidMount (){
+    this.props.fetchUsers();
+  }
+
   render() {
+   
     return (
       <div>
-        <div className="userlist">
+        <div>
             <h3>All users:</h3>
+            
         </div>
       </div>
     )
   }
 }
+
+const mapStateToProps = state => ({
+  users: state.users.items
+})
+
+export default connect (mapStateToProps, { fetchUsers })(UserList);

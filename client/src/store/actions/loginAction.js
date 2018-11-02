@@ -1,5 +1,5 @@
 import { ADD_USER } from './types';
-import axios from 'axios';
+import axios from '../../axiosInstance'
 
 const apiUrl = 'http://localhost:5000/api/users';
 
