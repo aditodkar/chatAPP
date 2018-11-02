@@ -6,7 +6,7 @@ export const fetchUsers = () => dispatch => {
     .then( users => 
         dispatch({
             type: FETCH_USERS,
-            payload: users
+            payload: users.data
         })
     )
     .catch( error => {

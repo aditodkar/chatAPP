@@ -9,12 +9,12 @@ class UserList extends Component {
   }
 
   render() {
-   
+    console.log(this.props.allusers)
     return (
       <div>
         <div>
             <h3>All users:</h3>
-            
+            {/* {this.props.allusers && this.props.allusers[0] ? this.props.allusers[0].email : ""} */}
         </div>
       </div>
     )
@@ -22,7 +22,7 @@ class UserList extends Component {
 }
 
 const mapStateToProps = state => ({
-  users: state.users.items
+  allusers: state.allusers.items
 })
 
 export default connect (mapStateToProps, { fetchUsers })(UserList);
