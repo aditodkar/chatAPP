@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { saveAuthor } from '../../store/actions/authorAction'
 import { saveMessages } from '../../store/actions/messageAction'
 import { deleteAuthor } from '../../store/actions/deleteAuthorAction'
-import { deleteMessage } from '../../store/actions/deletemessageAction'
 import { fetchUsers } from '../../store/actions/userAction'
-
+import { cleartextInput } from '../../store/actions/cleartextInputAction'
+ 
 class Chat extends Component {
 
     constructor(props){
@@ -28,7 +28,7 @@ class Chat extends Component {
     componentDidMount() {
       this.props.fetchUsers();
       this.socket.on('RECEIVE_MESSAGE', data => {
-          console.log(data);
+        //   console.log(data);
           this.addMessage(data);
       });
     //   this.socket.emit('USER_ID', {
@@ -45,6 +45,7 @@ class Chat extends Component {
             message: this.state.message,
             date: Date.now()
         });
+        this.props.cleartextInput()
 
         // this.socket.emit('TYPING', {
         //     typing: this.props.match.params.user
@@ -55,15 +56,12 @@ class Chat extends Component {
 
     addMessage(data) {
       //console.log(data);
-      this.props.saveAuthor(this.state.author)
-      this.props.deleteMessage()
+      this.props.saveAuthor(this.props.match.params.user)
       this.props.saveMessages(data)
     
-      //   this.setState({
-    //     messages: [...this.state.messages, ...data],
-    //     //message: '', 
-    //     date: ''
-    //   });
+      this.setState({
+        message: ''
+      });
       //console.log(this.state.message);
     //console.log(this.state.messages);
     };
@@ -77,7 +75,7 @@ class Chat extends Component {
                 <div id="chat">
                     <div className="card">
                         <div id="messages" className="card-block">
-                            { this.props.messages && this.props.messages.messages && this.props.messages.messages.map((message, index) => {
+                            { this.props.messages && this.props.messages.map((message, index) => {
 
                                 if(message.author === this.props.match.params.user){
                                     return (
@@ -89,18 +87,6 @@ class Chat extends Component {
                                     ) 
                                 }  
                             })}
-                            {/* {this.props.messages.messages.map((message, index) => {
-
-                            if(message.author === this.props.match.params.user){
-                                return (
-                                    <div key={index} className="msgBoxRight"><p className="msgTextRight">{message.message}</p></div>
-                                )
-                            }else{
-                                return (
-                                    <div key={index} className="msgBoxLeft"><p className="msgTextLeft">{message.message}</p></div>
-                                ) 
-                            }  
-                            })} */}
                         </div>
                         <div id="feedback"></div>
                             <div className="row">
@@ -120,9 +106,9 @@ class Chat extends Component {
                 <div className="userlist">
                 <div>
                     <h3>All users:</h3>
-                    {this.props.allusers ? this.props.allusers.map((val,index) => {
+                    {this.props.match.params.user ? this.props.allusers.map((val,index) => {
               
-                    if(this.props.currentUser === val.username){
+                    if(this.props.match.params.user === val.username){
                         return null
                     }else {
                         return <div className="usernameList" key={index}><button onClick={this.handleClick} type="button">{val.username}</button></div>
@@ -140,8 +126,7 @@ class Chat extends Component {
 const mapStateToProps = state => ({
     author: state.chat.author,
     messages: state.chat.messages,
-    message: state.chat.message,
     allusers: state.allusers.items
 })
 
-export default connect (mapStateToProps, { saveAuthor, saveMessages, deleteAuthor, deleteMessage, fetchUsers })(Chat);
+export default connect (mapStateToProps, { saveAuthor, saveMessages, deleteAuthor, fetchUsers, cleartextInput })(Chat);
