@@ -77,6 +77,11 @@
     background-color: #EBEEFD;
 }
 
+.usernameList{
+    margin-top: 5px;
+    padding: 10px;
+}
+
 .upload{
     margin-top: 20px;
 }

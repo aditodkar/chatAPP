@@ -3,10 +3,10 @@ import axios from '../../axiosInstance'
 
 export const fetchUsers = () => dispatch => {
     axios.get(`api/users`)
-    .then( users => 
+    .then( response => 
         dispatch({
             type: FETCH_USERS,
-            payload: users.data
+            payload: response.data
         })
     )
     .catch( error => {
