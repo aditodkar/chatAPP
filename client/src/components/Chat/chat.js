@@ -6,7 +6,6 @@ import { saveAuthor } from '../../store/actions/authorAction'
 import { saveMessages } from '../../store/actions/messageAction'
 import { deleteAuthor } from '../../store/actions/deleteAuthorAction'
 import { fetchUsers } from '../../store/actions/userAction'
-import { cleartextInput } from '../../store/actions/cleartextInputAction'
  
 class Chat extends Component {
 
@@ -23,14 +22,17 @@ class Chat extends Component {
         this.addMessage = this.addMessage.bind(this);
 
         this.socket = io('localhost:5000');
+        this.socket.emit('LOGGEDIN_USER', { user1: this.props.match.params.user});
     }
 
     componentDidMount() {
       this.props.fetchUsers();
       this.socket.on('RECEIVE_MESSAGE', data => {
-        //   console.log(data);
+          console.log(data);
           this.addMessage(data);
       });
+      
+      this.socket.emit('LOGGEDIN_USER', { user1: this.props.match.params.user});
     //   this.socket.emit('USER_ID', {
     //     userId: this.props.match.params.user
     //   });
@@ -45,7 +47,8 @@ class Chat extends Component {
             message: this.state.message,
             date: Date.now()
         });
-        this.props.cleartextInput()
+
+        // this.socket.emit('LOGGEDIN_USER', { user1: this.props.match.params.user});
 
         // this.socket.emit('TYPING', {
         //     typing: this.props.match.params.user
@@ -55,7 +58,7 @@ class Chat extends Component {
     };
 
     addMessage(data) {
-      //console.log(data);
+      console.log(data);
       this.props.saveAuthor(this.props.match.params.user)
       this.props.saveMessages(data)
     
@@ -66,8 +69,19 @@ class Chat extends Component {
     //console.log(this.state.messages);
     };
 
+    handleClick = (userName) => {
+        // console.log(userName)
+
+        // this.socket.emit('GET_USER2', {
+        //     user2: userName
+        // });
+
+        // this.socket.emit('LOGGEDIN_USER', { user1: this.props.match.params.user});
+        this.socket.emit('GET_USER', { user2: userName });
+    }
+
     render() {
-        console.log(this.props)
+        //console.log(this.props)
         return (
         <div>
             <h2>Hello {this.props.match.params.user}</h2>
@@ -111,7 +125,7 @@ class Chat extends Component {
                     if(this.props.match.params.user === val.username){
                         return null
                     }else {
-                        return <div className="usernameList" key={index}><button onClick={this.handleClick} type="button">{val.username}</button></div>
+                        return <div className="usernameList" key={index}><button onClick={() => this.handleClick(val.username)} type="button">{val.username}</button></div>
                     }
                     }) : ""}
                 </div>
@@ -129,4 +143,4 @@ const mapStateToProps = state => ({
     allusers: state.allusers.items
 })
 
-export default connect (mapStateToProps, { saveAuthor, saveMessages, deleteAuthor, fetchUsers, cleartextInput })(Chat);
+export default connect (mapStateToProps, { saveAuthor, saveMessages, deleteAuthor, fetchUsers })(Chat);

@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const socket = require('socket.io');
 const path = require('path');
 const message = require('./model/message');
-//const Conversation = require('./model/conversation');
+const Conversation = require('./model/conversation');
 const User = require('./model/user');
 
 const app = express();
@@ -68,7 +68,6 @@ app.get('/api/users', (req, res) => {
 
 })
 
-
 let db = mongoose.connection;
 
 db.once('open', function() {
@@ -84,6 +83,32 @@ io.on("connection", function(socket){
   });
 
   let chat = db.collection('chat');
+  let conversation = db.collection('conversation'); 
+  let user1,user2;
+
+      socket.on('GET_USER', function (data) {
+        console.log(data);
+         user2 = data.user2;
+      });
+
+      socket.on('LOGGEDIN_USER', function(data) {
+        console.log(data);
+         user1 = data.user1;
+
+         console.log("This is user1 "+ user1)
+         console.log("This is user2 "+ user2)
+
+         conversation.find({ $and : [ { user1: user1 }, { user2: user2 } ] }).toArray(function (err, res) {
+          if(err){
+              throw err;
+          }
+
+          console.log(res) 
+              // Emit the messages
+          io.emit('RECEIVE_MESSAGE', res);
+        })
+
+      });
 
       socket.on('SEND_MESSAGE', function(data){
         
@@ -94,23 +119,53 @@ io.on("connection", function(socket){
         // Check for name and message
         if(author !== '' || message !== '' || date !== ''){
             // Insert message
-            chat.insert({author:author, message: message, date:date}, function(){
-              io.emit('RECEIVE_MESSAGE', [data]);
-            });
+            // chat.insert({author:author, message: message, date:date}, function(){
+            //   io.emit('RECEIVE_MESSAGE', [data]);
+            // });
+
+            // conversation.findOneAndUpdate(
+            //   { user1 : user1, user2: user2 }, 
+            //   { conversations : { $push : { author, message, date } } },
+            //   { upsert : true}
+            // );
+
+            conversation.findOne({ $and :[{user1: user1}, {user2: user2}] }, function (err, existingConversation){
+                if(existingConversation === null){
+                  conversation.insert({user1: user1, user2: user2, conversation: [{author: author, message: message, date:date}] }, function (){
+                    io.emit('RECEIVE_MESSAGE', [data]);
+                  })
+                }else{
+                  conversation.update({user1: user1, user2: user2}, 
+                    {$push: {conversation : { author : author ,message : message,date : date }}  })
+                }
+            })
+
+
         }
       });
+     
 
       // socket.on('TYPING', function(data){
       //     socket.broadcast.emit('TYPING', data)
       // })
 
-    chat.find().sort({_id:1}).toArray(function(err, res){
-      if(err){
-          throw err;
-      }
-      // Emit the messages
-      io.emit('RECEIVE_MESSAGE', res);
-    }); 
+    // chat.find().sort({_id:1}).toArray(function(err, res){
+    //   if(err){
+    //       throw err;
+    //   }
+    //   // Emit the messages
+    //   io.emit('RECEIVE_MESSAGE', res);
+    // }); 
+
+    // conversation.find({ $and : [ {user1: user1}, {user2: user2} ] }).toArray(function (err, res) {
+    //   if(err){
+    //       throw err;
+    //   }
+    //       // Emit the messages
+    //   io.emit('RECEIVE_MESSAGE', res);
+    // })
+
+
   }) 
 
 });

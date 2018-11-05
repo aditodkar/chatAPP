@@ -11,9 +11,7 @@ const ConversationSchema = new Schema({
     type: String,
     required: true
   },
-  conversations : {
-    type: Schema.Types.ObjectId, ref: 'Message'
-  }
+  conversation : [{ type: Schema.Types.ObjectId, ref: 'Message' }]
   
 });
 
