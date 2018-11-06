@@ -146,8 +146,13 @@ io.on("connection", function(socket){
                   conversation.insert({user1: user1, user2: user2, conversation: [{author: author, message: message, date:date}] }, function (){
                     // io.emit('RECEIVE_MESSAGE', [data]);
                   })
+                  conversation.insert({user1: user2, user2: user1, conversation: [{author: author, message: message, date:date}] }, function (){
+                    // io.emit('RECEIVE_MESSAGE', [data]);
+                  })
                 }else{
                   conversation.update({user1: user1, user2: user2}, 
+                    {$push: {conversation : { author : author ,message : message,date : date }}  })
+                  conversation.update({user1: user2, user2: user1}, 
                     {$push: {conversation : { author : author ,message : message,date : date }}  })
                 }
                 io.emit('RECEIVE_MESSAGE', [data]);

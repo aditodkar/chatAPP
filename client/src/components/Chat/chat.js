@@ -7,7 +7,6 @@ import { saveMessages } from '../../store/actions/messageAction'
 import { deleteAuthor } from '../../store/actions/deleteAuthorAction'
 import { fetchUsers } from '../../store/actions/userAction'
 import { removeMessages } from '../../store/actions/removemessagesAction'
-// import { showMessages } from '../../store/actions/showMessagesAction'
  
 class Chat extends Component {
 
