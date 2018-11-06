@@ -6,6 +6,8 @@ import { saveAuthor } from '../../store/actions/authorAction'
 import { saveMessages } from '../../store/actions/messageAction'
 import { deleteAuthor } from '../../store/actions/deleteAuthorAction'
 import { fetchUsers } from '../../store/actions/userAction'
+import { removeMessages } from '../../store/actions/removemessagesAction'
+// import { showMessages } from '../../store/actions/showMessagesAction'
  
 class Chat extends Component {
 
@@ -77,7 +79,9 @@ class Chat extends Component {
         // });
 
         // this.socket.emit('LOGGEDIN_USER', { user1: this.props.match.params.user});
+        this.props.removeMessages()
         this.socket.emit('GET_USER', { user2: userName });
+    
     }
 
     render() {
@@ -143,4 +147,4 @@ const mapStateToProps = state => ({
     allusers: state.allusers.items
 })
 
-export default connect (mapStateToProps, { saveAuthor, saveMessages, deleteAuthor, fetchUsers })(Chat);
+export default connect (mapStateToProps, { saveAuthor, saveMessages, deleteAuthor, fetchUsers, removeMessages })(Chat);

@@ -1,4 +1,5 @@
-import { SAVE_AUTHOR, SAVE_MESSAGES, DELETE_AUTHOR } from '../actions/types';
+import { SAVE_AUTHOR, SAVE_MESSAGES, DELETE_AUTHOR, REMOVE_MESSAGES } from '../actions/types';
+// import { SHOW_MESSAGES } from "../actions/types";
 
 const initialState = {
     author: '',
@@ -13,6 +14,15 @@ export default function (state = initialState, action) {
                 ...state,
                 messages: [...state.messages, ...action.payload.messages]
             };
+        case REMOVE_MESSAGES:
+            return {
+                ...state,
+                messages: []
+            };
+        // case SHOW_MESSAGES:
+        //     return {
+        //         messages: [messages]
+        //     };
         case SAVE_AUTHOR:
             return {
                 ...state,

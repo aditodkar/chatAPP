@@ -89,6 +89,18 @@ io.on("connection", function(socket){
       socket.on('GET_USER', function (data) {
         console.log(data);
          user2 = data.user2;
+
+         conversation.find({ $and : [ {user1: user1}, {user2: user2} ] }).toArray(function (err, res) {
+          if(err){
+              throw err;
+          }
+              // Emit the messages
+              console.log(res[0])
+              if(res[0] !== undefined ){
+                io.emit('RECEIVE_MESSAGE', res[0].conversation);
+              }
+        })
+        
       });
 
       socket.on('LOGGEDIN_USER', function(data) {
@@ -132,12 +144,13 @@ io.on("connection", function(socket){
             conversation.findOne({ $and :[{user1: user1}, {user2: user2}] }, function (err, existingConversation){
                 if(existingConversation === null){
                   conversation.insert({user1: user1, user2: user2, conversation: [{author: author, message: message, date:date}] }, function (){
-                    io.emit('RECEIVE_MESSAGE', [data]);
+                    // io.emit('RECEIVE_MESSAGE', [data]);
                   })
                 }else{
                   conversation.update({user1: user1, user2: user2}, 
                     {$push: {conversation : { author : author ,message : message,date : date }}  })
                 }
+                io.emit('RECEIVE_MESSAGE', [data]);
             })
 
 
